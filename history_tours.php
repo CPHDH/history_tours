@@ -427,7 +427,7 @@ $locationFields = array(
 		),
 	array(
 		'label'		=> 'Map Coordinates',
-		'name'		=> 'tour_coordinates',
+		'name'		=> 'location_coordinates',
 		'type'		=> 'text',
 		'options'	=> null,
 		'custom_ui'	=> true, // this hidden form field will save coordinates as an array
