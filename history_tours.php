@@ -277,7 +277,7 @@ class History_Tours_Meta_Box {
 			        '<label for="'.$field['name'].'" class="'.$field['name'].'_label">'.$field['label'].'</label>'.
 			        '</th><td>'.
 			        '<input type="text" id="'.$field['name'].'" name="'.$field['name'].'" class="'.$field['name'].'_field"'. 
-			        	'placeholder="" value="' . $value. '" style="width:100%;"><br><span class="description">'.$field['helper'].'</span></td>';
+			        	'placeholder="" value="' . $value. '"><br><span class="description">'.$field['helper'].'</span></td>';
 			        continue 2;
 			    case 'select':
 			    	$options = $field['options'];
