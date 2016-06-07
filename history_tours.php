@@ -261,7 +261,9 @@ class History_Tours_Meta_Box {
 
 
 		// Add nonce for security and authentication.
-		wp_nonce_field( 'tour_nonce_action', 'tour_nonce' );
+		$nonce_action = $this->post_type.'_nonce_action';
+		$nonce_name = $this->post_type.'_nonce';
+		wp_nonce_field( $nonce_action, $nonce_name );
 		
 		
 		$html = null;
@@ -318,8 +320,8 @@ class History_Tours_Meta_Box {
 	public function save_metabox( $post_id, $post ) {
 
 		// Nonce for security and authentication
-		$nonce_name   = $_POST['tour_nonce'];
-		$nonce_action = 'tour_nonce_action';
+		$nonce_name   = isset($_POST[$this->post_type.'_nonce']) ? $_POST[$this->post_type.'_nonce'] : null;
+		$nonce_action = $this->post_type.'_nonce_action';
 
 		// Nonce is set
 		if ( ! isset( $nonce_name ) )
