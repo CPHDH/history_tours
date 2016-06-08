@@ -6,6 +6,9 @@
 <div id="map"></div>
   
 <script>
+	// Hide text input field
+	jQuery('#location_coordinates_row').hide();
+	
 	var marker=null;
 	function initMap() {
 		

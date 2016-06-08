@@ -272,7 +272,7 @@ class History_Tours_Meta_Box {
 			$value = get_post_meta( $post->ID, $field['name'], true );
 			if( empty( $value ) ) $value = '';
 			
-			$html .= '<tr>';
+			$html .= '<tr id="'.$field['name'].'_row">';
 			switch ($field['type']) {
 			    case 'text':
 			        $html .= '<th>'.

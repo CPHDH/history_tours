@@ -65,6 +65,9 @@
   
   
 <script>
+	// Hide text input field
+	jQuery('#tour_locations_row').hide();
+	
 	// Create sortable columns
 	jQuery(function() {
 		jQuery( "#left, #right" ).sortable({
