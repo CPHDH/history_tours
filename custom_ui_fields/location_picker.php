@@ -41,6 +41,7 @@
 				'post_type'=>$type,
 				'post_status' => 'publish',
 				'posts_per_page' => -1,
+				'orderby' => 'post__in',
 				'post__in' => $already_added, /* include only posts that are already added to #right */
 			);	
 			$my_query = null;
