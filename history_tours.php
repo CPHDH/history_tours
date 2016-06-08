@@ -441,4 +441,9 @@ $locationFields = array(
 if(is_admin()){
 	new History_Tours_Meta_Box('tours','Tour Details',$tourFields,'custom_ui_fields/location_picker.php');
 	new History_Tours_Meta_Box('tour_locations','Location Info',$locationFields,'custom_ui_fields/location_map.php');	
+// Admin stylesheet 
+add_action( 'admin_enqueue_scripts', 'history_tours_admin_css' );
+function history_tours_admin_css(){
+        wp_register_style( 'history_tours_admin_css', plugin_dir_url( __FILE__ ) . 'styles/admin.css');
+        wp_enqueue_style( 'history_tours_admin_css' );	
 }

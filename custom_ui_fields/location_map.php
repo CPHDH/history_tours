@@ -1,16 +1,4 @@
 <?php wp_enqueue_script('googlemaps','https://maps.googleapis.com/maps/api/js?key='.constant("GOOGLE_MAPS_API_KEY").'&callback=initMap');?>
-<style>
-#map{ 
-	height: 360px; 
-	width: 100%;
-	background: #fafafa;
-}
-#location-search{
-	width: 80%;
-	border:1px solid #eaeaea;
-	margin: 0 1em 1em 0;
-}
-</style>
 <br><hr> 
 <p class="dashicons-before dashicons-location">&nbsp;<em>Enter a search term to change the map view. Click on the map to drop a pin on your exact location.</em></p>
 <input id="location-search" name="location-search" placeholder="Enter a search term">

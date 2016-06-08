@@ -1,69 +1,7 @@
 <?php wp_enqueue_script('jquery-ui-selectable');?>
-<style>
-	.col.addable,.col.added{
-		width:50%;
-		background: #fafafa;
-		border:1px solid #eaeaea;
-	}
-	.col.addable{
-		margin-right: 1em;
-	}
-	#left, #right {
-		height: 300px;
-		list-style-type: none;
-		margin: 0;
-		padding: 5px 0 0 0;
-		overflow-y: scroll;
-		background: #fafafa;
-	}
-	#left li, #right li {
-		margin:1%;
-		padding:1%;
-		font-size: 1.2em;
-		width: 95.5%;
-		cursor: pointer;
-		border: 1px solid #eaeaea;
-		box-shadow: 0 0 2px #eaeaea;
-		background: #fff;
-	}
-	.col.text p {
-	    margin: 0.5em 0 0 0;
-	    max-height: 4.2em;
-	    overflow-y: hidden;
-	    font-size: .7em;
-	    line-height: 1.4em;
-	}	
-	.col.text h4{
-		margin: 0;
-	}
-	.col.thumb{
-		background-size:cover;
-		width:4em;
-		height:4em;
-		margin:.25em .5em .25em 0;
-		background-color:#ccc;
-		flex-shrink: 0;
-	}
-
-	.col-input{
-		margin: .25em 1%;
-		padding: 1%;
-		width: 98%;
-		display: block;
-		border: 1px solid #eaeaea;
-	}
-	p.no-locations{
-	    display: block;
-	    margin: 0 auto;
-	    text-align: center;
-	    padding: 1em;
-	    color: #999;		
-	}
-
-</style>
 <br><hr> 
 <p class="dashicons-before dashicons-info">&nbsp;<em>Drag locations from left to right to add to tour. Drag up and down to change order.</em></p>
-<div style="display: inline-flex;width: 100%;"> 
+<div class="location-picker"> 
    <div class="col addable">
 	   <input class="col-input" id="location-filter" type="text" onkeyup="filterLocations(this)" placeholder="Filter locations by title...">
 	   <ul id="left" class="connected_sortable">
@@ -80,7 +18,7 @@
 				$my_query = new WP_Query($args);	
 				if( $my_query->have_posts() ) {
 				  while ($my_query->have_posts()) : $my_query->the_post(); ?>
-				    <li id="<?php echo the_id();?>" style="display: flex; cursor: hand">
+				    <li class="location-item" id="<?php echo the_id();?>">
 					    <div class="col thumb" style="background-image: url(<?php echo has_post_thumbnail() ? the_post_thumbnail_url() : null;?>)">
 						</div>
 					    <div class="col text"><h4><?php the_title(); ?></h4><?php the_excerpt();?></div>
@@ -109,7 +47,7 @@
 			$my_query = new WP_Query($args);	
 			if( $my_query->have_posts() ) {
 			  while ($my_query->have_posts()) : $my_query->the_post(); ?>
-			    <li id="<?php echo the_id();?>" style="display: flex; cursor: hand">
+			    <li class="location-item" id="<?php echo the_id();?>">
 				    <div class="col thumb" style="background-image: url(<?php echo has_post_thumbnail() ? the_post_thumbnail_url() : null;?>)">
 					</div>
 				    <div class="col text"><h4><?php the_title(); ?></h4><?php the_excerpt();?></div>
