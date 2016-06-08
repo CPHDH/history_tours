@@ -1,6 +1,6 @@
 <?php wp_enqueue_script('jquery-ui-selectable');?>
 <br><hr> 
-<p class="dashicons-before dashicons-info">&nbsp;<em>Drag locations from left to right to add to tour. Drag up and down to change order.</em></p>
+<p class="dashicons-before dashicons-location">&nbsp;<em>Drag locations from left to right to add to tour. Drag up and down to change order.</em></p>
 <div class="location-picker"> 
    <div class="col addable">
 	   <input class="col-input" id="location-filter" type="text" onkeyup="filterLocations(this)" placeholder="Filter locations by title...">
