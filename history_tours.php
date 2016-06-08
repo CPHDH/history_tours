@@ -441,6 +441,29 @@ $locationFields = array(
 if(is_admin()){
 	new History_Tours_Meta_Box('tours','Tour Details',$tourFields,'custom_ui_fields/location_picker.php');
 	new History_Tours_Meta_Box('tour_locations','Location Info',$locationFields,'custom_ui_fields/location_map.php');	
+}
+
+
+// Add counts to Dashboard
+add_action( 'dashboard_glance_items' , 'history_tours_at_a_glance' );
+function history_tours_at_a_glance(){
+    $args = array(
+        'public' => true ,
+        '_builtin' => false
+    );
+    $post_types = get_post_types( $args , 'object' , 'and' );
+    foreach( $post_types as $post_type ) {
+        $count = wp_count_posts( $post_type->name );
+        $num = number_format_i18n( $count->publish );
+        $text = _n( $post_type->labels->singular_name, $post_type->labels->name , intval( $count->publish ) );
+        if ( current_user_can( 'edit_posts' ) ) {
+            $type_name = $post_type->name;
+        }
+        echo '<li class="'.$type_name.'-count"><tr><a href="edit.php?post_type='.$type_name.'"><td class="first b b-' . $post_type->name . '"></td>' . $num . ' <td class="t ' . $post_type->name . '">' . $text . '</td></a></tr></li>';
+    }
+
+}
+
 // Admin stylesheet 
 add_action( 'admin_enqueue_scripts', 'history_tours_admin_css' );
 function history_tours_admin_css(){
