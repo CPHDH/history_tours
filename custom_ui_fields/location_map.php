@@ -1,6 +1,6 @@
 <?php wp_enqueue_script('googlemaps','https://maps.googleapis.com/maps/api/js?key='.constant("GOOGLE_MAPS_API_KEY").'&callback=initMap');?>
 <br><hr> 
-<p class="dashicons-before dashicons-location">&nbsp;<em>Enter a search term to change the map view. Click on the map to drop a pin on your exact location.</em></p>
+<p class="dashicons-before dashicons-location">&nbsp;<em>Submit a search term to place a pin on the map. Drag the pin to adjust the exact location.</em></p>
 <input id="location-search" name="location-search" placeholder="Enter a search term">
 <input id="location-search-submit" class="wp-core-ui button" type="button" value="Get Coordinates">
 <div id="map"></div>
