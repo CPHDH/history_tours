@@ -402,6 +402,14 @@ $tourFields = array(
 		'helper'	=> 'Check this box to create a map of locations for this tour. (All tour locations must have geocoordinate data)'
 		),
 	array(
+		'label'		=> 'Custom Label for Locations',
+		'name'		=> 'tour_location_label',
+		'type'		=> 'text',
+		'options'	=> null,
+		'custom_ui'	=> false,
+		'helper'	=> 'Enter a custom label for the tour locations. Default: "Locations for this Tour"'
+		),		
+	array(
 		'label'		=> 'Tour Locations',
 		'name'		=> 'tour_locations',
 		'type'		=> 'text',
