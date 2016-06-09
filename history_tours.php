@@ -479,6 +479,7 @@ add_action( 'admin_enqueue_scripts', 'history_tours_admin_css' );
 function history_tours_admin_css(){
         wp_register_style( 'history_tours_admin_css', plugin_dir_url( __FILE__ ) . 'styles/admin.css');
         wp_enqueue_style( 'history_tours_admin_css' );	
+}
 // Adds filter to the_title() so that Tour and Location subtitles are displayed automatically in tour posts
 add_filter( 'the_title', 'append_to_tour_and_location_title', 20 );
 function append_to_tour_and_location_title($title){
@@ -555,4 +556,107 @@ function append_to_tours($content){
 		return $content;
 	}
 }
+
+// Tour map
+function history_tours_tour_map($location_array){
+	$html=history_tours_map_setup();
+	$script_data=[];
+	foreach($location_array as $loc){
+		$post = get_post($loc);
+		$meta = get_post_meta($loc,null,true);
+		$coords_raw = isset($meta['location_coordinates']) ? $meta['location_coordinates'][0] : null;
+		$title = $post->post_title;
+		if($coords_raw){
+			// Construct data array for map script		
+			$script_data[] = process_marker_coords($coords_raw,$title);
+		}
+
+	}
+	return $html.history_tours_map_script($script_data);
+}
+
+function history_tours_map_script($script_data){
+	?>
+	<script>
+		var data = <?php echo json_encode($script_data);?>;
+		console.log(data);
+
+		function initMap(){
+			var markers = [];
+			var bounds = new google.maps.LatLngBounds();			
+			var default_lat = <?php echo constant("MAP_DEFAULT_LAT");?>;
+			var default_lon = <?php echo constant("MAP_DEFAULT_LON");?>;
+			var default_zoom = 6;
+			var map = new google.maps.Map(document.getElementById('map'), {
+				center: {lat: default_lat, lng: default_lon},
+				scrollwheel: false,
+				zoom: default_zoom
+			});
+			data.forEach(function(location,i){
+				console.log(location);
+				markers[i] = new google.maps.Marker({
+					title: location.title,
+					map: map,
+					position: {lat: parseFloat(location.lat), lng: parseFloat(location.lon)},
+					animation: google.maps.Animation.DROP,
+				});	
+				bounds.extend(markers[i].getPosition());				
+			});
+			if(data.length > 1){
+				 map.fitBounds(bounds);
+			}else{
+				map.setCenter(markers[0].getPosition());
+			}
+	
+			
+		}
+	</script>
+	<?php
+}
+
+// Tour Locations
+function history_tours_tour_locations($location_array,$heading){
+	$html = $heading;
+	foreach($location_array as $loc){
+		$post = get_post($loc);
+		$meta = get_post_meta($loc,null,true);
+		$title = $post->post_title;
+		$subtitle = (isset($meta['location_subtitle']) && strlen($meta['location_subtitle'][0])) ? '&nbsp;<br><span style="font-size: .8em;">'.$meta['location_subtitle'][0].'</span>' : null;
+		$physical_location = (isset($meta['location_address']) && strlen($meta['location_address'][0])) ? '<div style="margin:1em 0;"><strong>Location</strong>: <span><em>'.$meta['location_address'][0].'</em></span></div>' : null;	
+		$imgURL = isset($meta['_thumbnail_id'][0]) ? wp_get_attachment_image_src($meta['_thumbnail_id'][0],'post-thumbnail',true) : false;	
+		$img = $imgURL ? '<div><img src="'.$imgURL[0].'"></div>' : null;
+		
+		$html .= '<h4>'.'<a href="'.$post->guid.'">'.$title.'</a>'.$subtitle.'</h4>';
+		$html .= $img.$physical_location;
+		$html .= $post->post_content;
+		$html .= history_tours_inline_terms($post->ID,'location_types',"<strong>Type</strong>: ");
+		
+		
+	}
+	return '<section>'.$html.'</section>';
+}
+
+// Custom Taxonomies for inline use
+function history_tours_inline_terms($id,$term_name,$heading) {
+	$html = $heading;
+	$tags_list = get_the_term_list($id,$term_name,'',', ');
+	return strlen($tags_list) ? '<div class="location-meta" style="margin-top:.25em;">'.$html.$tags_list.'</div>' : null;
+}
+
+// Map Marker array helpers
+function process_marker_coords($coords_raw,$title){
+		$coords=explode(',',str_replace(array('(',')'),"",$coords_raw));
+		$script_data = array(
+				'title'=>$title,
+				'lat'=>$coords[0],
+				'lon'=>$coords[1],
+			);	
+		return $script_data;
+}
+// Builds HTML container for map and queues up the Google Maps API
+function history_tours_map_setup(){
+	$html = '<figure><div id="map" style="width:100%;height:20em;background:#eaeaea;margin-bottom:1em;"></div></figure>';
+	$api = wp_enqueue_script('googlemaps',
+	'https://maps.googleapis.com/maps/api/js?key='.constant("GOOGLE_MAPS_API_KEY").'&callback=initMap');			
+	return $api.$html;
 }
