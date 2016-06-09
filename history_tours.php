@@ -479,4 +479,23 @@ add_action( 'admin_enqueue_scripts', 'history_tours_admin_css' );
 function history_tours_admin_css(){
         wp_register_style( 'history_tours_admin_css', plugin_dir_url( __FILE__ ) . 'styles/admin.css');
         wp_enqueue_style( 'history_tours_admin_css' );	
+// Adds filter to the_title() so that Tour and Location subtitles are displayed automatically in tour posts
+add_filter( 'the_title', 'append_to_tour_and_location_title', 20 );
+function append_to_tour_and_location_title($title){
+	if ( is_singular('tours') || is_singular('tour_locations') ){
+		$post = $GLOBALS['post'];
+		$meta = get_post_meta($post->ID,null,true);
+		if(is_singular('tours') && isset($meta['tour_subtitle']) && strlen($meta['tour_subtitle'][0])){ 
+			// Tour Subtitle
+			return $title.'&nbsp;<br><span style="font-size: .8em;">'.$meta['tour_subtitle'][0].'</span>';
+		}elseif(is_singular('tour_locations') && isset($meta['location_subtitle']) && strlen($meta['location_subtitle'][0])){ 
+			// Location Subtitle
+			return $title.'&nbsp;<br><span style="font-size: .8em;">'.$meta['location_subtitle'][0].'</span>';
+		}else{
+			return $title;
+		}
+	}else{
+		return $title;
+	}
+}
 }
