@@ -498,4 +498,61 @@ function append_to_tour_and_location_title($title){
 		return $title;
 	}
 }
+
+// Adds filter to the_content() so that tour maps and locations are displayed automatically in tour posts
+add_filter( 'the_content', 'append_to_tours', 20 );
+function append_to_tours($content){
+	if ( is_singular('tours') || is_singular('tour_locations') ){
+		$html = null;
+		$post = $GLOBALS['post'];
+		$meta = get_post_meta($post->ID,null,true);
+		
+		if(is_singular('tours')){
+			// Tour meta
+			$map_this = isset($meta['map_this_tour']) && $meta['map_this_tour'][0]=='checked';
+			$template = isset($meta['tour_template']) ? $meta['tour_template'] : null;
+			$location_string = isset($meta['tour_locations']) ? $meta['tour_locations'][0] : null;
+			$location_array = $location_string ? explode(',',$location_string) : false;			
+		}
+		
+		if(is_singular('tour_locations')){
+			// Location meta
+			$physical_location = (isset($meta['location_address']) && strlen($meta['location_address'][0])) ? '<div style="margin:1em 0;"><strong>Location</strong>: <span><em>'.$meta['location_address'][0].'</em></span></div>' : null;
+			$script_data = isset($meta['location_coordinates']) ? $meta['location_coordinates'][0] : null;
+			$coords_raw = isset($meta['location_coordinates']) ? $meta['location_coordinates'][0] : null;
+			$title = $post->post_title;
+			if($coords_raw){
+				// Construct data array for map script	
+				$script_data = [];
+				$script_data[] = process_marker_coords($coords_raw,$title);	
+			}
+			$html .= $physical_location;		
+		}
+		
+		// Tour Map
+		if(is_singular('tours') && $map_this && $location_array){
+			$html .= '<div id="history-tours-map">'.history_tours_tour_map($location_array).'</div>';
+		}
+		
+		// Content
+		$html .= $content;
+		
+		// Location Map and Meta
+		if(is_singular('tour_locations') && $script_data){
+			$html.=history_tours_map_setup();
+			$html.='<div id="history-tours-map">'.history_tours_map_script($script_data).'</div>';
+			$html.=history_tours_inline_terms($post->ID,'location_types',"<strong>Type</strong>: ");
+		}
+		
+		// Tour Locations
+		if(is_singular('tours') && $location_array){
+			$heading = (isset($meta['tour_location_label']) && strlen($meta['tour_location_label'][0])) ? '<h3>'.$meta['tour_location_label'][0].'</h3>' : '<h3>Locations for this Tour</h3>';
+			$html .= '<div id="history-tours-locations">'.history_tours_tour_locations($location_array,$heading).'</div>';	
+		}
+		
+		return $html;
+	}else{
+		return $content;
+	}
+}
 }
