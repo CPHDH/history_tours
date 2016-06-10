@@ -660,3 +660,186 @@ function history_tours_map_setup(){
 	'https://maps.googleapis.com/maps/api/js?key='.constant("GOOGLE_MAPS_API_KEY").'&callback=initMap');			
 	return $api.$html;
 }
+
+// Admin Object Picker
+function history_tours_admin_object_picker($post,$type,$field){ 
+	wp_enqueue_script('jquery-ui-selectable')
+	?>
+	<div class="object-picker"> 
+	   <div class="col addable">
+		   <input class="col-input" id="location-filter" type="text" onkeyup="filterLocations(this)" placeholder="Filter locations by title...">
+		   <ul id="left" class="connected_sortable">
+				<?php
+					$already_added = explode(',',get_post_meta( $post->ID, $field, true )); 
+					$args = array(
+						'post_type'=>$type,
+						'post_status' => 'publish',
+						'posts_per_page' => -1,
+						'post__not_in' => $already_added, /* omit posts that are already added to #right */
+					);	
+					$my_query = null;
+					$my_query = new WP_Query($args);	
+					if( $my_query->have_posts() ) {
+					  while ($my_query->have_posts()) : $my_query->the_post(); ?>
+					    <li class="location-item" id="<?php echo the_id();?>">
+						    <div class="col thumb" style="background-image: url(<?php echo has_post_thumbnail() ? the_post_thumbnail_url() : null;?>)">
+							</div>
+						    <div class="col text"><h4><?php the_title(); ?></h4><?php the_excerpt();?></div>
+					    </li>
+					    <?php
+					  endwhile;
+					}else{ ?>
+						<p class="no-locations">No published Locations found. <a href="/wp-admin/edit.php?post_type=tour_locations">Create one now</a>.</p>
+					<?php }
+					wp_reset_query();
+				?>
+		   </ul>
+	   </div>
+	   <div class="col added">
+		   <ul id="right" class="connected_sortable">
+			<?php
+				$already_added = explode(',',get_post_meta( $post->ID, $field, true )); 
+				$args = array(
+					'post_type'=>$type,
+					'post_status' => 'publish',
+					'posts_per_page' => -1,
+					'orderby' => 'post__in',
+					'post__in' => $already_added, /* include only posts that are already added to #right */
+				);	
+				$my_query = null;
+				$my_query = new WP_Query($args);	
+				if( $my_query->have_posts() ) {
+				  while ($my_query->have_posts()) : $my_query->the_post(); ?>
+				    <li class="location-item" id="<?php echo the_id();?>">
+					    <div class="col thumb" style="background-image: url(<?php echo has_post_thumbnail() ? the_post_thumbnail_url() : null;?>)">
+						</div>
+					    <div class="col text"><h4><?php the_title(); ?></h4><?php the_excerpt();?></div>
+				    </li>
+				    <?php
+				  endwhile;
+				}else{ ?>
+					<p class="no-locations">Drag Locations from left column to add to Tour.</p>
+				<?php }
+				wp_reset_query();
+			?>
+		   </ul>
+	   </div>
+	</div>	
+	<script>
+		// Hide text input field
+		jQuery('#<?php echo $field;?>_row').hide();
+		
+		// Create sortable columns
+		jQuery(function() {
+			jQuery( "#left, #right" ).sortable({
+			  connectWith: ".connected_sortable",
+			}).disableSelection();
+		});
+		// Update form field with location IDs when user updates right column
+		jQuery( "#right" ).on( "sortreceive sortremove sortupdate", function( event, ui ) {
+			var locations=Array();
+			jQuery('#right li').each(function(index){
+				locations.push(jQuery(this).attr('id'))
+			});
+			console.log(locations);
+			jQuery('input#<?php echo $field;?>').val(locations);
+			
+		});
+		// Hide fallback message when a column recieves an item
+		jQuery( "#right" ).on('sortreceive',function(event,ui){
+			jQuery('#right .no-objects').remove(); 
+		});
+		jQuery( "#left" ).on('sortreceive',function(event,ui){
+			jQuery('#left .no-objects').remove(); 
+		});	
+		// Filter form for left column
+	    function filterLocations(element) {
+	        var value = jQuery(element).val();
+		    value = value.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+		        return letter.toUpperCase();
+		    });
+	        jQuery("#left > li").each(function() {
+	            if (jQuery(this).text().search(value) > -1) {
+	                jQuery(this).show();
+	            }
+	            else {
+	                jQuery(this).hide();
+	            }
+	        });
+	    }	
+	</script>	
+<?php }
+
+
+// Admin Map Form	
+function history_tours_admin_map_form($post,$field){ 
+	wp_enqueue_script('googlemaps',
+	'https://maps.googleapis.com/maps/api/js?key='.constant("GOOGLE_MAPS_API_KEY").'&callback=initMap')
+	?>
+	<input id="location-search" name="location-search" placeholder="Enter a search term">
+	<input id="location-search-submit" class="wp-core-ui button" type="button" value="Get Coordinates">
+	<div id="map"></div>
+	<script>
+		// Hide text input field
+		jQuery('#<?php echo $field;?>_row').hide();
+		
+		var marker=null;
+		function initMap() {
+			
+			var user_coords = '<?php echo str_replace(array('(',')'),"",get_post_meta( $post->ID, $field, true ));?>';
+			user_coords = user_coords ? user_coords.split(',') : false;
+			var default_lat = user_coords ? parseFloat(user_coords[0]) : <?php echo constant("MAP_DEFAULT_LAT");?>;
+			var default_lon = user_coords ? parseFloat(user_coords[1]) :<?php echo constant("MAP_DEFAULT_LON");?>;
+			var default_zoom = user_coords ? 16 : 6;
+			var map = new google.maps.Map(document.getElementById('map'), {
+				center: {lat: default_lat, lng: default_lon},
+				scrollwheel: false,
+				zoom: default_zoom
+			});
+			var geocoder = new google.maps.Geocoder();
+			if(user_coords){
+				marker = new google.maps.Marker({
+					map: map,
+					position: {lat: parseFloat(user_coords[0]), lng: parseFloat(user_coords[1])},
+					draggable:true,
+					animation: google.maps.Animation.DROP,
+				});		
+				google.maps.event.addListener(marker, 'dragend', function(evt){
+					var new_location = '(' + evt.latLng.lat() + ',' + evt.latLng.lng() +')';
+					console.log(new_location);
+					jQuery('#<?php echo $field;?>').val(new_location);
+				}); 				
+			}		
+			document.getElementById('location-search-submit').addEventListener('click', function() {
+				geocodeAddress(geocoder, map);
+			});  
+		}
+		function geocodeAddress(geocoder, map) {
+			var address = document.getElementById('location-search').value;
+			geocoder.geocode({'address': address}, function(results, status) {
+				if (status === google.maps.GeocoderStatus.OK) {
+					map.setCenter(results[0].geometry.location);
+					map.setZoom(16);
+					if(marker !== null){
+						marker.setMap(null);
+						marker = null;
+					}
+					marker = new google.maps.Marker({
+						map: map,
+						position: results[0].geometry.location,
+						draggable:true,
+						animation: google.maps.Animation.DROP,
+					});
+					jQuery('#<?php echo $field;?>').val(results[0].geometry.location);
+					google.maps.event.addListener(marker, 'dragend', function(evt){
+						var new_location = '(' + evt.latLng.lat() + ',' + evt.latLng.lng() +')';
+						console.log(new_location);
+						jQuery('#<?php echo $field;?>').val(new_location);
+					});        
+				} else {
+				alert('Geocode was not successful for the following reason: ' + status);
+				}
+			});
+		}
+	</script>	
+<?php }	

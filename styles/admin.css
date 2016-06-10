@@ -58,14 +58,14 @@ body.post-type-tours .col-input{
 	display: block;
 	border: 1px solid #eaeaea;
 }
-body.post-type-tours p.no-locations{
+body.post-type-tours p.no-objects{
     display: block;
     margin: 0 auto;
     text-align: center;
     padding: 1em;
     color: #999;		
 }
-body.post-type-tours .location-picker{
+body.post-type-tours .object-picker{
 	display: inline-flex;
 	width: 100%;
 }
