@@ -444,7 +444,15 @@ $locationFields = array(
 		'options'	=> null,
 		'custom_ui'	=> true, // this hidden form field will save coordinates as an array
 		'helper'	=> 'Use the map to add geo-coordinates for this location.'
-		),		
+		),	
+	array(
+		'label'		=> 'Media Items',
+		'name'		=> 'location_media',
+		'type'		=> 'text',
+		'options'	=> null,
+		'custom_ui'	=> true, // this hidden form field will save attachment IDs as an array
+		'helper'	=> 'Choose media attachments for this tour. You can <a href="/wp-admin/upload.php">add and edit Media files here</a>.'
+		),				
 );
 
 // Init metaboxes
@@ -452,7 +460,6 @@ if(is_admin()){
 	new History_Tours_Meta_Box('tours','Tour Details',$tourFields,'custom_ui_fields/tours.php');
 	new History_Tours_Meta_Box('tour_locations','Location Info',$locationFields,'custom_ui_fields/tour_locations.php');	
 }
-
 
 // Add counts to Dashboard
 add_action( 'dashboard_glance_items' , 'history_tours_at_a_glance' );
