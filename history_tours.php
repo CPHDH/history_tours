@@ -506,7 +506,11 @@ function history_tours_append_custom_content($content){
 				$script_data = [];
 				$script_data[] = process_marker_coords($coords_raw,$title);	
 			}
-			$html .= $physical_location;		
+			$html .= $physical_location;	
+			
+			$media_string = isset($meta['location_media']) ? $meta['location_media'][0] : null;
+			$media_array = $media_string ? explode(',',$media_string) : false;	
+				
 		}
 		
 		// Tour Map
@@ -516,6 +520,27 @@ function history_tours_append_custom_content($content){
 		
 		// Content
 		$html .= $content;
+		
+		
+		// Media Items for Location
+		if(is_singular('tour_locations') && $media_array){
+			$html .= '<section><div id="location-media">';
+			foreach($media_array as $media_id){
+				$media_meta = wp_prepare_attachment_for_js($media_id);
+				$media_title = isset($media_meta['title']) ? $media_meta['title'] : null;
+				$media_caption = isset($media_meta['caption']) ? $media_meta['caption'] : null;
+				$media_description = isset($media_meta['description']) ? $media_meta['description'] : null;
+				$media_alt = isset($media_meta['alt']) ? $media_meta['alt'] : ' ';
+				$media_link = $media_meta['link'];
+				$media_url = $media_meta['url'];
+				
+				$html.= '<h4><a href="'.$media_link.'">'.$media_title.'</a></h4>';
+				$html.= '<img src="'.$media_url.'" alt="'.$media_alt.'" style="max-width:100%;">';
+				$html.= $media_caption ? '<div class="entry-caption" style="margin-bottom:1em;"><p>'.$media_caption.'</p></div>' : null;
+				$html.= $media_description ? '<p>'.$media_description.'</p>' : null;
+			}
+			$html .= '<div></section>';
+		}
 		
 		// Location Map and Meta
 		if(is_singular('tour_locations') && $script_data){
