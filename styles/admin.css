@@ -2,18 +2,22 @@
 #dashboard_right_now .tours-count a:before {content: "\f231"}  
 #dashboard_right_now .tour_locations-count a:before {content: "\f230"}  
 
-/* Tours */
-body.post-type-tours .col.addable,
-body.post-type-tours .col.added{
+/* Object Picker */
+.history-tours-object-picker{
+	display: inline-flex;
+	width: 100%;
+}
+.history-tours-object-picker .col.addable,
+.history-tours-object-picker .col.added{
 	width:50%;
 	background: #fafafa;
 	border:1px solid #eaeaea;
 }
-body.post-type-tours .col.addable{
+.history-tours-object-picker .col.addable{
 	margin-right: 1em;
 }
-body.post-type-tours #left, 
-body.post-type-tours #right {
+.history-tours-object-picker #left, 
+.history-tours-object-picker #right {
 	height: 300px;
 	list-style-type: none;
 	margin: 0;
@@ -21,8 +25,8 @@ body.post-type-tours #right {
 	overflow-y: scroll;
 	background: #fafafa;
 }
-body.post-type-tours #left li, 
-body.post-type-tours #right li {
+.history-tours-object-picker #left li, 
+.history-tours-object-picker #right li {
 	margin:1%;
 	padding:1%;
 	font-size: 1.2em;
@@ -32,17 +36,17 @@ body.post-type-tours #right li {
 	box-shadow: 0 0 2px #eaeaea;
 	background: #fff;
 }
-body.post-type-tours .col.text p {
+.history-tours-object-picker .col.text p {
     margin: 0.5em 0 0 0;
     max-height: 4.2em;
     overflow-y: hidden;
     font-size: .7em;
     line-height: 1.4em;
 }	
-body.post-type-tours .col.text h4{
+.history-tours-object-picker .col.text h4{
 	margin: 0;
 }
-body.post-type-tours .col.thumb{
+.history-tours-object-picker .col.thumb{
 	background-size:cover;
 	width:4em;
 	height:4em;
@@ -51,36 +55,32 @@ body.post-type-tours .col.thumb{
 	flex-shrink: 0;
 }
 
-body.post-type-tours .col-input{
+.history-tours-object-picker .col-input{
 	margin: .25em 1%;
 	padding: 1%;
 	width: 98%;
 	display: block;
 	border: 1px solid #eaeaea;
 }
-body.post-type-tours p.no-objects{
+.history-tours-object-picker p.no-objects{
     display: block;
     margin: 0 auto;
     text-align: center;
     padding: 1em;
     color: #999;		
 }
-body.post-type-tours .object-picker{
-	display: inline-flex;
-	width: 100%;
-}
-body.post-type-tours .location-item{
+.history-tours-object-picker .object-item{
 	display: flex; 
 	cursor: hand	
 }
 
 /* Locations */
-body.post-type-tour_locations #map{ 
+#admin-map-form #map{ 
 	height: 360px; 
 	width: 100%;
 	background: #fafafa;
 }
-body.post-type-tour_locations #location-search{
+#admin-map-form #location-search{
 	width: 80%;
 	border:1px solid #eaeaea;
 	margin: 0 1em 1em 0;
