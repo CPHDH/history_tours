@@ -809,9 +809,11 @@ function history_tours_admin_map_form($post,$field){
 	wp_enqueue_script('googlemaps',
 	'https://maps.googleapis.com/maps/api/js?key='.constant("GOOGLE_MAPS_API_KEY").'&callback=initMap')
 	?>
-	<input id="location-search" name="location-search" placeholder="Enter a search term">
-	<input id="location-search-submit" class="wp-core-ui button" type="button" value="Get Coordinates">
-	<div id="map"></div>
+	<div id="admin-map-form">
+		<input id="location-search" name="location-search" placeholder="Enter a search term">
+		<input id="location-search-submit" class="wp-core-ui button" type="button" value="Get Coordinates">
+		<div id="map"></div>
+	</div>
 	<script>
 		// Hide text input field
 		jQuery('#<?php echo $field;?>_row').hide();
