@@ -449,8 +449,8 @@ $locationFields = array(
 
 // Init metaboxes
 if(is_admin()){
-	new History_Tours_Meta_Box('tours','Tour Details',$tourFields,'custom_ui_fields/location_picker.php');
-	new History_Tours_Meta_Box('tour_locations','Location Info',$locationFields,'custom_ui_fields/location_map.php');	
+	new History_Tours_Meta_Box('tours','Tour Details',$tourFields,'custom_ui_fields/tours.php');
+	new History_Tours_Meta_Box('tour_locations','Location Info',$locationFields,'custom_ui_fields/tour_locations.php');	
 }
 
 
