@@ -192,34 +192,6 @@ function tour_register_and_rewrite_flush() {
 register_activation_hook( __FILE__, 'tour_register_and_rewrite_flush' );
 
 
-// WYSIWYG tweaks
-add_filter("mce_buttons", "edit_wysiwyg_buttons_line1", 0);
-add_filter("mce_buttons_2", "edit_wysiwyg_buttons_line2", 0);
-function edit_wysiwyg_buttons_line1($buttons) {
-
-	//Remove these from first line
-	$removable = array('alignleft','alignright','aligncenter');
-	
-	foreach($removable as $remove){
-	  if ( ( $key = array_search($remove,$buttons) ) !== false )
-	  unset($buttons[$key]);      
-	}
-	return $buttons;		
-
-}
-function edit_wysiwyg_buttons_line2($buttons) {
-     
-      //Remove these from second line
-      $removable = array('forecolor','alignjustify');
-      
-      foreach($removable as $remove){
-	      if ( ( $key = array_search($remove,$buttons) ) !== false )
-		  unset($buttons[$key]);      
-      }
-      return $buttons;
-}
-
-
 // Custom Metaboxes
 class History_Tours_Meta_Box {
 		
@@ -885,3 +857,30 @@ function history_tours_admin_map_form($post,$field){
 		}
 	</script>	
 <?php }	
+	
+// Admin WYSIWYG tweaks
+add_filter("mce_buttons", "edit_wysiwyg_buttons_line1", 0);
+add_filter("mce_buttons_2", "edit_wysiwyg_buttons_line2", 0);
+function edit_wysiwyg_buttons_line1($buttons) {
+
+	//Remove these from first line
+	$removable = array('alignleft','alignright','aligncenter');
+	
+	foreach($removable as $remove){
+	  if ( ( $key = array_search($remove,$buttons) ) !== false )
+	  unset($buttons[$key]);      
+	}
+	return $buttons;		
+
+}
+function edit_wysiwyg_buttons_line2($buttons) {
+     
+      //Remove these from second line
+      $removable = array('forecolor','alignjustify');
+      
+      foreach($removable as $remove){
+	      if ( ( $key = array_search($remove,$buttons) ) !== false )
+		  unset($buttons[$key]);      
+      }
+      return $buttons;
+}	

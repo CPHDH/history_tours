@@ -25,6 +25,9 @@
 	overflow-y: scroll;
 	background: #fafafa;
 }
+.history-tours-object-picker #right{
+	height: 330px;
+}
 .history-tours-object-picker #left li, 
 .history-tours-object-picker #right li {
 	margin:1%;
