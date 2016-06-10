@@ -699,7 +699,7 @@ function history_tours_admin_object_picker($post,$type,$field,$label_from,$label
 						    	if($type == 'attachment'){
 							    	$img_url = wp_get_attachment_url();
 						    	}else{
-							    	$img_url = has_post_thumbnail() ? the_post_thumbnail_url() : null;
+							    	$img_url = has_post_thumbnail() ? get_the_post_thumbnail_url() : null;
 						    	}
 						    ?>
 						    <div class="col thumb" style="background-image: url(<?php echo $img_url;?>)">
@@ -745,7 +745,7 @@ function history_tours_admin_object_picker($post,$type,$field,$label_from,$label
 					    	if($type == 'attachment'){
 						    	$img_url = wp_get_attachment_url();
 					    	}else{
-						    	$img_url = has_post_thumbnail() ? the_post_thumbnail_url() : null;
+						    	$img_url = has_post_thumbnail() ? get_the_post_thumbnail_url() : null;
 					    	}
 					    ?>				    
 					    <div class="col thumb" style="background-image: url(<?php echo $img_url;?>)">
