@@ -662,34 +662,50 @@ function history_tours_map_setup(){
 }
 
 // Admin Object Picker
-function history_tours_admin_object_picker($post,$type,$field){ 
+function history_tours_admin_object_picker($post,$type,$field,$label_from,$label_to){ 
 	wp_enqueue_script('jquery-ui-selectable')
 	?>
-	<div class="object-picker"> 
+	<div class="history-tours-object-picker"> 
 	   <div class="col addable">
-		   <input class="col-input" id="location-filter" type="text" onkeyup="filterLocations(this)" placeholder="Filter locations by title...">
+		   <input class="col-input" id="location-filter" type="text" onkeyup="filterLocations(this)" placeholder="Filter <?php echo $label_from;?> by title...">
 		   <ul id="left" class="connected_sortable">
 				<?php
 					$already_added = explode(',',get_post_meta( $post->ID, $field, true )); 
-					$args = array(
-						'post_type'=>$type,
-						'post_status' => 'publish',
-						'posts_per_page' => -1,
-						'post__not_in' => $already_added, /* omit posts that are already added to #right */
-					);	
+					if($type == 'attachment'){
+						$args = array(
+							'post_type'=>$type,
+							'post_status' => 'any',
+							'post_mime_type' => 'image/jpeg,image/gif,image/jpg,image/png',
+							'post__not_in' => $already_added, /* omit posts that are already added to #right */
+						);													
+					}else{
+						$args = array(
+							'post_type'=>$type,
+							'post_status' => 'publish',
+							'posts_per_page' => -1,
+							'post__not_in' => $already_added, /* omit posts that are already added to #right */
+						);							
+					}
 					$my_query = null;
 					$my_query = new WP_Query($args);	
 					if( $my_query->have_posts() ) {
 					  while ($my_query->have_posts()) : $my_query->the_post(); ?>
-					    <li class="location-item" id="<?php echo the_id();?>">
-						    <div class="col thumb" style="background-image: url(<?php echo has_post_thumbnail() ? the_post_thumbnail_url() : null;?>)">
+					    <li class="object-item" id="<?php echo the_id();?>">
+					    	<?php 
+						    	if($type == 'attachment'){
+							    	$img_url = wp_get_attachment_url();
+						    	}else{
+							    	$img_url = has_post_thumbnail() ? the_post_thumbnail_url() : null;
+						    	}
+						    ?>
+						    <div class="col thumb" style="background-image: url(<?php echo $img_url;?>)">
 							</div>
 						    <div class="col text"><h4><?php the_title(); ?></h4><?php the_excerpt();?></div>
 					    </li>
 					    <?php
 					  endwhile;
 					}else{ ?>
-						<p class="no-locations">No published Locations found. <a href="/wp-admin/edit.php?post_type=tour_locations">Create one now</a>.</p>
+						<p class="no-objects">No <?php echo ($type !== 'attachment' ? 'published ' : null).$label_from;?> found. <a href="/wp-admin/edit.php?post_type=<?php echo $type;?>">Add some now</a>.</p>
 					<?php }
 					wp_reset_query();
 				?>
@@ -699,26 +715,43 @@ function history_tours_admin_object_picker($post,$type,$field){
 		   <ul id="right" class="connected_sortable">
 			<?php
 				$already_added = explode(',',get_post_meta( $post->ID, $field, true )); 
-				$args = array(
-					'post_type'=>$type,
-					'post_status' => 'publish',
-					'posts_per_page' => -1,
-					'orderby' => 'post__in',
-					'post__in' => $already_added, /* include only posts that are already added to #right */
-				);	
+				if($type == 'attachment'){
+					$args = array(
+						'post_type'=>$type,
+						'post_status' => 'any',
+						'post_mime_type' => 'image/jpeg,image/gif,image/jpg,image/png',
+						'orderby' => 'post__in',
+						'post__in' => $already_added, /* include only posts that are already added to #right */
+					);													
+				}else{
+					$args = array(
+						'post_type'=>$type,
+						'post_status' => 'publish',
+						'posts_per_page' => -1,
+						'orderby' => 'post__in',
+						'post__in' => $already_added, /* include only posts that are already added to #right */
+					);					
+				}
 				$my_query = null;
 				$my_query = new WP_Query($args);	
 				if( $my_query->have_posts() ) {
 				  while ($my_query->have_posts()) : $my_query->the_post(); ?>
-				    <li class="location-item" id="<?php echo the_id();?>">
-					    <div class="col thumb" style="background-image: url(<?php echo has_post_thumbnail() ? the_post_thumbnail_url() : null;?>)">
+				    <li class="object-item" id="<?php echo the_id();?>">
+				    	<?php 
+					    	if($type == 'attachment'){
+						    	$img_url = wp_get_attachment_url();
+					    	}else{
+						    	$img_url = has_post_thumbnail() ? the_post_thumbnail_url() : null;
+					    	}
+					    ?>				    
+					    <div class="col thumb" style="background-image: url(<?php echo $img_url;?>)">
 						</div>
 					    <div class="col text"><h4><?php the_title(); ?></h4><?php the_excerpt();?></div>
 				    </li>
 				    <?php
 				  endwhile;
 				}else{ ?>
-					<p class="no-locations">Drag Locations from left column to add to Tour.</p>
+					<p class="no-objects">Drag <?php echo $label_from;?> from left column to add to <?php echo $label_to;?>.</p>
 				<?php }
 				wp_reset_query();
 			?>
