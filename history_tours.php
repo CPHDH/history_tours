@@ -479,9 +479,9 @@ function append_to_tour_and_location_title($title){
 	}
 }
 
-// Adds filter to the_content() so that tour maps and locations are displayed automatically in tour posts
-add_filter( 'the_content', 'append_to_tours', 20 );
-function append_to_tours($content){
+// Adds filter to the_content() so that custom content is displayed automatically in tour/location posts
+add_filter( 'the_content', 'history_tours_append_custom_content', 20 );
+function history_tours_append_custom_content($content){
 	if ( is_singular('tours') || is_singular('tour_locations') ){
 		$html = null;
 		$post = $GLOBALS['post'];
