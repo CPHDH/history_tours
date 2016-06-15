@@ -82,6 +82,7 @@
 	height: 360px; 
 	width: 100%;
 	background: #fafafa;
+	margin-bottom: 1em;
 }
 #admin-map-form #location-search{
 	width: 80%;

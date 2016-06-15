@@ -817,6 +817,7 @@ function history_tours_admin_map_form($post,$field){
 		<input id="location-search" name="location-search" placeholder="Enter a search term">
 		<input id="location-search-submit" class="wp-core-ui button" type="button" value="Get Coordinates">
 		<div id="map"></div>
+		<a href="#" id="clear_<?php echo $field;?>" class="hidden wp-core-ui button">Clear Map Coordinates</a>
 	</div>
 	<script>
 		// Hide text input field
@@ -847,7 +848,8 @@ function history_tours_admin_map_form($post,$field){
 					var new_location = '(' + evt.latLng.lat() + ',' + evt.latLng.lng() +')';
 					console.log(new_location);
 					jQuery('#<?php echo $field;?>').val(new_location);
-				}); 				
+				}); 
+				jQuery('#clear_<?php echo $field;?>').removeClass('hidden');				
 			}		
 			document.getElementById('location-search-submit').addEventListener('click', function() {
 				geocodeAddress(geocoder, map);
@@ -874,12 +876,20 @@ function history_tours_admin_map_form($post,$field){
 						var new_location = '(' + evt.latLng.lat() + ',' + evt.latLng.lng() +')';
 						console.log(new_location);
 						jQuery('#<?php echo $field;?>').val(new_location);
-					});        
+					});   
+					jQuery('#clear_<?php echo $field;?>').removeClass('hidden');     
 				} else {
 				alert('Geocode was not successful for the following reason: ' + status);
 				}
 			});
 		}
+		
+		// Button: Clear Map Coordinates 
+		jQuery('#clear_<?php echo $field;?>').on('click',function(){
+			marker.setMap(null);
+			jQuery('#<?php echo $field;?>').val(null);	
+			return false;			
+		})		
 	</script>	
 <?php }	
 	
