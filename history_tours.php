@@ -464,7 +464,9 @@ function history_tours_admin_css(){
         wp_enqueue_style( 'history_tours_admin_css' );	
 }
 // Adds filter to the_title() so that Tour and Location subtitles are displayed automatically in tour posts
-add_filter( 'the_title', 'append_to_tour_and_location_title', 20 );
+if(constant("AUTO_FILTER_TITLES")){
+	add_filter( 'the_title', 'append_to_tour_and_location_title', 20 );
+}
 function append_to_tour_and_location_title($title){
 	if ( is_singular('tours') || is_singular('tour_locations') ){
 		$post = $GLOBALS['post'];
@@ -484,7 +486,9 @@ function append_to_tour_and_location_title($title){
 }
 
 // Adds filter to the_content() so that custom content is displayed automatically in tour/location posts
-add_filter( 'the_content', 'history_tours_append_custom_content', 20 );
+if(constant("AUTO_FILTER_CONTENT")){
+	add_filter( 'the_content', 'history_tours_append_custom_content', 20 );
+}
 function history_tours_append_custom_content($content){
 	if ( is_singular('tours') || is_singular('tour_locations') ){
 		$html = null;
@@ -897,8 +901,10 @@ function history_tours_admin_map_form($post,$field){
 <?php }	
 	
 // Admin WYSIWYG tweaks
-add_filter("mce_buttons", "edit_wysiwyg_buttons_line1", 0);
-add_filter("mce_buttons_2", "edit_wysiwyg_buttons_line2", 0);
+if(constant("WYSIWYG_TWEAKS")){
+	add_filter("mce_buttons", "edit_wysiwyg_buttons_line1", 0);
+	add_filter("mce_buttons_2", "edit_wysiwyg_buttons_line2", 0);	
+}
 function edit_wysiwyg_buttons_line1($buttons) {
 
 	//Remove these from first line
