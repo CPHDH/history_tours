@@ -465,10 +465,10 @@ function append_to_tour_and_location_title($title){
 	if ( is_singular('tours') || is_singular('tour_locations') ){
 		$post = $GLOBALS['post'];
 		$meta = get_post_meta($post->ID,null,true);
-		if(is_singular('tours') && isset($meta['tour_subtitle']) && strlen($meta['tour_subtitle'][0])){ 
+		if(in_the_loop() && !is_page() && is_singular('tours') && isset($meta['tour_subtitle']) && strlen($meta['tour_subtitle'][0])){ 
 			// Tour Subtitle
 			return $title.'&nbsp;<br><span style="font-size: .8em;">'.$meta['tour_subtitle'][0].'</span>';
-		}elseif(is_singular('tour_locations') && isset($meta['location_subtitle']) && strlen($meta['location_subtitle'][0])){ 
+		}elseif(in_the_loop() && !is_page() && is_singular('tour_locations') && isset($meta['location_subtitle']) && strlen($meta['location_subtitle'][0])){ 
 			// Location Subtitle
 			return $title.'&nbsp;<br><span style="font-size: .8em;">'.$meta['location_subtitle'][0].'</span>';
 		}else{
