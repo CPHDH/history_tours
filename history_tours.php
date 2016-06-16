@@ -25,10 +25,14 @@ License: GPL2
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-// This should maybe be a user-set plugin option?
+// Plugin settings
 define( 'GOOGLE_MAPS_API_KEY', 'AIzaSyDKA8gwbVUoZvaPFXOdOjD4JFOAQFVTub4' );
 define( 'MAP_DEFAULT_LAT', '39.961176' );
 define( 'MAP_DEFAULT_LON', '-82.998794' );
+define( 'AUTO_FILTER_TITLES', true);
+define( 'AUTO_FILTER_CONTENT', true );
+define( 'WYSIWYG_TWEAKS', true );
+
 
 // Define custom post types and taxonomies
 add_action( 'init', 'tour_type_tax_init' );
