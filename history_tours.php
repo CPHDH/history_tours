@@ -633,8 +633,7 @@ function history_tours_tour_locations($location_array,$heading){
 		$html .= '<h4>'.'<a href="'.$post->guid.'">'.$title.'</a>'.$subtitle.'</h4>';
 		$html .= $img.$physical_location;
 		$html .= $post->post_content;
-		$html .= history_tours_inline_terms($post->ID,'location_types',"<strong>Type</strong>: ");
-		
+		$html .= ' <a href="'.$post->guid.'" class="read-more-button">...Read More</a>';
 		
 	}
 	return '<section>'.$html.'</section>';
