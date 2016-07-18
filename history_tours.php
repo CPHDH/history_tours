@@ -529,20 +529,7 @@ function history_tours_append_custom_content($content){
 		// Media Items for Location
 		if(is_singular('tour_locations') && $media_array){
 			$html .= '<section><div id="location-media">';
-			foreach($media_array as $media_id){
-				$media_meta = wp_prepare_attachment_for_js($media_id);
-				$media_title = isset($media_meta['title']) ? $media_meta['title'] : null;
-				$media_caption = isset($media_meta['caption']) ? $media_meta['caption'] : null;
-				$media_description = isset($media_meta['description']) ? $media_meta['description'] : null;
-				$media_alt = isset($media_meta['alt']) ? $media_meta['alt'] : ' ';
-				$media_link = $media_meta['link'];
-				$media_url = $media_meta['url'];
-				
-				$html.= '<h4><a href="'.$media_link.'">'.$media_title.'</a></h4>';
-				$html.= '<img src="'.$media_url.'" alt="'.$media_alt.'" style="max-width:100%;">';
-				$html.= $media_caption ? '<div class="entry-caption" style="margin-bottom:1em;"><p>'.$media_caption.'</p></div>' : null;
-				$html.= $media_description ? '<p>'.$media_description.'</p>' : null;
-			}
+			$html .= history_tours_media_items($media_array);
 			$html .= '<div></section>';
 		}
 		
@@ -622,23 +609,110 @@ function history_tours_map_script($script_data){
 	<?php
 }
 
+// Media 
+function history_tours_media_items($media_array){
+	$html=null;
+	foreach($media_array as $media_id){
+		$media_meta = wp_prepare_attachment_for_js($media_id);
+		$media_title = isset($media_meta['title']) ? $media_meta['title'] : null;
+		$media_caption = isset($media_meta['caption']) ? $media_meta['caption'] : null;
+		$media_description = isset($media_meta['description']) ? $media_meta['description'] : null;
+		$media_alt = isset($media_meta['alt']) ? $media_meta['alt'] : ' ';
+		$media_link = $media_meta['link'];
+		$media_url = $media_meta['url'];
+		
+		$html.= '<h4><a href="'.$media_link.'">'.$media_title.'</a></h4>';
+		$html.= '<img src="'.$media_url.'" alt="'.$media_alt.'" style="max-width:100%;">';
+		$html.= $media_caption ? '<div class="entry-caption"><p>'.$media_caption.'</p></div>' : null;
+		$html.= $media_description ? '<p>'.$media_description.'</p>' : null;
+	}
+	return $html;	
+}
+// @layout = grid,slides,list
+function history_tours_media_items_layout($media_array,$layout,$locationID){
+	
+	wp_register_script('swipe',plugin_dir_url( __FILE__ ) .'/scripts/swipe/swipe.js');
+	wp_register_script('fancybox',plugin_dir_url( __FILE__ ) .'/scripts/fancybox/source/jquery.fancybox.pack.js');
+	wp_register_script('fancybox_thumbs',plugin_dir_url( __FILE__ ) .'/scripts/fancybox/source/helpers/jquery.fancybox-thumbs.js');
+	wp_register_script('tour',plugin_dir_url( __FILE__ ) .'/scripts/tour.js',array('jquery','swipe','fancybox','fancybox_thumbs'));
+	
+	$html='<div id="tour-location-media" class="'.$layout.'  location-'.$locationID.'">';
+	
+	if($layout==='slides'){
+		
+		$html.='<div id="slider" class="swipe"><div class="swipe-wrap">';
+	}
+	
+	
+	foreach($media_array as $media_id){
+		
+		$media_meta = wp_prepare_attachment_for_js($media_id);
+		$media_title = isset($media_meta['title']) ? $media_meta['title'] : null;
+		$media_caption = isset($media_meta['caption']) ? $media_meta['caption'] : null;
+		$media_description = isset($media_meta['description']) ? '<span class="description">'.$media_meta['description'].'</span>' : null;
+		$media_alt = isset($media_meta['alt']) ? $media_meta['alt'] : ' ';
+		$media_link = $media_meta['link'];
+		$media_url = $media_meta['url'];
+		$fancybox_caption='<strong>'.$media_title.'</strong>: '.$media_description.'<a target="_blank" href="'.$media_link.'" class="view-more">View Details</a>';
+		
+		if($layout === 'grid'){
+			// Grid item
+			$html.= '<a href="'.$media_url.'" title="'.$media_title.'" class="item fancybox" style="background-image: url('.$media_url.');" data-caption="'.htmlspecialchars($fancybox_caption).'" rel="location-'.$locationID.'"></a>';
+		}elseif($layout === 'list'){
+			// List item
+			$html.='<div>';
+				$html.='<div class="col"><a class="fancybox" href="'.$media_url.'" title="'.$media_title.'" style="background-image: url('.$media_url.');" data-caption="'.htmlspecialchars($fancybox_caption).'" rel="location-'.$locationID.'"></a></div>';
+				$html .='<div class="col">';
+					$html .= '<a href="'.$media_meta['link'].'"><strong>'.$media_title.'</strong></a>';
+					$html .= '<p>'.$media_description.'</p>';
+				$html .='</div>';
+			$html .='</div>';
+			
+		}elseif($layout === 'slides'){
+			// Slide item
+			$html.= '<div><a class="slide-item fancybox" style="background-image: url('.$media_url.');" href="'.$media_url.'" data-caption="'.htmlspecialchars($fancybox_caption).'" rel="location-'.$locationID.'" title="'.$media_title.'">';
+			$html.='<div class="slide-detail"><span class="title">'.$media_title.'</span></div>';
+			$html.='</a></div>';
+		}
+	}
+	
+	
+	if($layout === 'grid'){
+		// add an empty item to prevent CSS flex stretching/spacing issues
+		$html.='<span class="hidden item"></span>'; 
+		}
+		
+	if($layout==='slides'){
+		$html.='</div></div>';
+		$html.= '<div><button class="swipe-left" onclick="mySwipe.prev()">Previous</button><button class="swipe-right" onclick="mySwipe.next()">Next</button></div>';
+	}	
+		
+	$html.='</div>';
+	wp_enqueue_script('tour');
+	return $html;	
+}
+
 // Tour Locations
 function history_tours_tour_locations($location_array,$heading){
 	$html = $heading;
 	foreach($location_array as $loc){
 		$post = get_post($loc);
 		$meta = get_post_meta($loc,null,true);
+		$layout = isset($meta['location_template']) ? $meta['location_template'][0] : 'grid';
 		$title = $post->post_title;
-		$subtitle = (isset($meta['location_subtitle']) && strlen($meta['location_subtitle'][0])) ? '&nbsp;<br><span style="font-size: .8em;">'.$meta['location_subtitle'][0].'</span>' : null;
+		$subtitle = (isset($meta['location_subtitle']) && strlen($meta['location_subtitle'][0])) ? '&nbsp;<br><span class="subtitle">'.$meta['location_subtitle'][0].'</span>' : null;
 		$physical_location = (isset($meta['location_address']) && strlen($meta['location_address'][0])) ? '<div style="margin:1em 0;"><strong>Location</strong>: <span><em>'.$meta['location_address'][0].'</em></span></div>' : null;	
 		$imgURL = isset($meta['_thumbnail_id'][0]) ? wp_get_attachment_image_src($meta['_thumbnail_id'][0],'post-thumbnail',true) : false;	
 		$img = $imgURL ? '<div><img src="'.$imgURL[0].'"></div>' : null;
 		
 		$html .= '<h4>'.'<a href="'.$post->guid.'">'.$title.'</a>'.$subtitle.'</h4>';
 		$html .= $img.$physical_location;
-		$html .= $post->post_content;
-		$html .= ' <a href="'.$post->guid.'" class="read-more-button">...Read More</a>';
-		
+		$html .= wpautop($post->post_content);
+		//$html .= ' <a href="'.$post->guid.'" class="read-more-button">Permalink</a>';
+			
+		$media_string = isset($meta['location_media']) ? $meta['location_media'][0] : null;
+		$media_array = $media_string ? explode(',',$media_string) : false;
+		$html .= $media_array ? history_tours_media_items_layout($media_array,$layout,$post->ID) : null;
 	}
 	return '<section>'.$html.'</section>';
 }
