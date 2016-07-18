@@ -477,12 +477,12 @@ function append_to_tour_and_location_title($title){
 	if ( is_singular('tours') || is_singular('tour_locations') ){
 		$post = $GLOBALS['post'];
 		$meta = get_post_meta($post->ID,null,true);
-		if(in_the_loop() && !is_page() && is_singular('tours') && isset($meta['tour_subtitle']) && strlen($meta['tour_subtitle'][0])){ 
+		if($title== $post->post_title && in_the_loop() && !is_page() && isset($meta['tour_subtitle']) && strlen($meta['tour_subtitle'][0])){ 
 			// Tour Subtitle
-			return $title.'&nbsp;<br><span style="font-size: .8em;">'.$meta['tour_subtitle'][0].'</span>';
-		}elseif(in_the_loop() && !is_page() && is_singular('tour_locations') && isset($meta['location_subtitle']) && strlen($meta['location_subtitle'][0])){ 
+			return $title.'&nbsp;<br><span class="subtitle">'.$meta['tour_subtitle'][0].'</span>';
+		}elseif($title== $post->post_title && in_the_loop() && !is_page() && isset($meta['location_subtitle']) && strlen($meta['location_subtitle'][0])){ 
 			// Location Subtitle
-			return $title.'&nbsp;<br><span style="font-size: .8em;">'.$meta['location_subtitle'][0].'</span>';
+			return $title.'&nbsp;<br><span class="subtitle">'.$meta['location_subtitle'][0].'</span>';
 		}else{
 			return $title;
 		}
@@ -767,6 +767,7 @@ function history_tours_admin_object_picker($post,$type,$field,$label_from,$label
 							'post_type'=>$type,
 							'post_status' => 'any',
 							'post_mime_type' => 'image/jpeg,image/gif,image/jpg,image/png',
+							'posts_per_page' => -1,
 							'post__not_in' => $already_added, /* omit posts that are already added to #right */
 						);													
 					}else{
