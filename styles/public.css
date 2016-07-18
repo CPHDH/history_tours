@@ -1,0 +1,225 @@
+@import '../scripts/fancybox/source/jquery.fancybox.css';
+@import '../scripts/fancybox/source/helpers/jquery.fancybox-thumbs.css';
+
+/*--------------------------------------------------------------
+### Tour Layouts: GRID
+--------------------------------------------------------------*/
+
+#tour-location-media.grid{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content:space-between
+}
+#tour-location-media.grid .item{
+	height: 10em;
+	margin-bottom: .5em;
+	background-position: center center;
+	background-size: cover;
+}
+
+@media all and (min-width:50em){
+	#tour-location-media.grid .item{
+		width: 32%;
+	}
+}
+@media all and (max-width:50em){
+	#tour-location-media.grid .item{
+		width: 49%;
+	}
+}
+#tour-location-media.grid .item.hidden{
+	height: 0;
+	margin-bottom: 0;
+}
+
+/*--------------------------------------------------------------
+### Tour Layouts: LIST
+--------------------------------------------------------------*/
+#tour-location-media.list{
+	margin-top: 2em;
+}
+
+#tour-location-media.list > div{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: none;
+	justify-content:space-between;
+}
+
+
+#tour-location-media.list > div .col:first-child a{
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 7.75rem;
+	width: 7.75rem;
+	margin-right: 1em;
+	display: block;
+}
+#tour-location-media.list > div .col:last-child{
+	max-height: 7.75rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-bottom: 3em;
+	font-size: .8em;
+	line-height: 1.6em;
+}
+
+
+
+@media all and (max-width:30em){
+	#tour-location-media.list > div .col:first-child a{
+		width: 8.5rem;
+		height: 8.5rem;
+	}
+	#tour-location-media.list > div .col:last-child{
+		max-height: 8.5rem;
+	}
+
+}
+
+/*--------------------------------------------------------------
+### Tour Layouts: SLIDES
+--------------------------------------------------------------*/
+#tour-location-media .slide-item{
+	height: 25em;
+	background-size:cover;
+	background-position: center center;
+	position: relative;
+	display: block;
+}
+#tour-location-media .slide-item .slide-detail{
+	position: absolute;
+	bottom:0;
+	background: #000;
+	color:#fff;
+	opacity: .7;
+	font-size: .8em;
+	padding: .5em;
+	width: 100%;
+}
+#tour-location-media .slide-item .slide-detail .title{
+	padding: .5em;
+	display: block;
+	width: 98%;
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+
+}
+
+@media all and (max-width:40em){
+	#tour-location-media .slide-item{
+		height: 20em;
+	}	
+}
+
+/*--------------------------------------------------------------
+### SWIPE JS
+--------------------------------------------------------------*/
+
+.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+}
+.swipe-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.swipe-wrap > div {
+  float:left;
+  width:100%;
+  position: relative;
+}
+button.swipe-left{
+	float: left;
+	margin-top: 1em;
+}
+button.swipe-right{
+	float: right;
+	margin-top: 1em;
+}
+
+/*--------------------------------------------------------------
+### FANCYBOX
+--------------------------------------------------------------*/
+.fancybox-title{
+	max-height: 45%;
+	overflow-y: scroll;
+}
+.fancybox-title a{
+	color:#fff !important;
+	font-weight: 700;
+	text-decoration: underline;
+	display: inline-block;
+}
+@media all and (max-width:40em){
+	.fancybox-title .description{
+		display: none;
+	}
+}
+.fancybox-title::-webkit-scrollbar              { color:red; background: rgba(0, 0, 0, .8); }
+.fancybox-title::-webkit-scrollbar-button       { color:red; background: rgba(0, 0, 0, .8);}
+.fancybox-title::-webkit-scrollbar-track        { color:red; background: rgba(0, 0, 0, .8); }
+.fancybox-title::-webkit-scrollbar-track-piece  { color:red; background: rgba(0, 0, 0, .8); }
+.fancybox-title::-webkit-scrollbar-thumb        { color:red; background: rgba(0, 0, 0, .8); }
+.fancybox-title::-webkit-scrollbar-corner       { color:red; background: rgba(0, 0, 0, .8); }
+.fancybox-title::-webkit-resizer                { color:red; background: rgba(0, 0, 0, .8); }
+
+/* Fancybox Thumbs */
+#fancybox-thumbs {
+	position: fixed;
+	left: 0;
+	width: 100%;
+	overflow: hidden;
+	z-index: 8050;
+}
+
+#fancybox-thumbs.bottom {
+	bottom: 2px;
+}
+
+#fancybox-thumbs.top {
+	top: 2px;
+}
+
+#fancybox-thumbs ul {
+	position: relative;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#fancybox-thumbs ul li {
+	float: left;
+	padding: 1px;
+	opacity: 0.5;
+}
+
+#fancybox-thumbs ul li.active {
+	opacity: 0.75;
+	padding: 0;
+	border: 1px solid #fff;
+}
+
+#fancybox-thumbs ul li:hover {
+	opacity: 1;
+}
+
+#fancybox-thumbs ul li a {
+	display: block;
+	position: relative;
+	overflow: hidden;
+	border: 1px solid #222;
+	background: #111;
+	outline: none;
+}
+
+#fancybox-thumbs ul li img {
+	display: block;
+	position: relative;
+	border: 0;
+	padding: 0;
+	max-width: none;
+}

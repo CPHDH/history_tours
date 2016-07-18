@@ -453,12 +453,22 @@ function history_tours_at_a_glance(){
 
 }
 
+
 // Admin stylesheet 
 add_action( 'admin_enqueue_scripts', 'history_tours_admin_css' );
 function history_tours_admin_css(){
         wp_register_style( 'history_tours_admin_css', plugin_dir_url( __FILE__ ) . 'styles/admin.css');
         wp_enqueue_style( 'history_tours_admin_css' );	
 }
+
+// Public stylesheet 
+add_action( 'wp_enqueue_scripts', 'history_tours_public_css' );
+function history_tours_public_css(){
+        wp_register_style( 'history_tours_public_css', plugin_dir_url( __FILE__ ) . 'styles/public.css');
+        wp_enqueue_style( 'history_tours_public_css' );	
+}
+
+
 // Adds filter to the_title() so that Tour and Location subtitles are displayed automatically in tour posts
 if(constant("AUTO_FILTER_TITLES")){
 	add_filter( 'the_title', 'append_to_tour_and_location_title', 20 );
