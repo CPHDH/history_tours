@@ -353,23 +353,6 @@ $tourFields = array(
 		'helper'	=> 'Enter a subtitle for the tour.'
 		),
 	array(
-		'label'		=> 'Tour Template',
-		'name'		=> 'tour_template',
-		'type'		=> 'select',
-		'options'	=> array(
-						array('label'=>'Inline','name'=>'all'),
-						array('label'=>'Grid of images – open locations in lightbox','name'=>'grid'),
-						array('label'=>'Grid of images – link to individual location pages','name'=>'grid_linked'),
-						array('label'=>'List of links','name'=>'links'),
-						array('label'=>'List of links – with text excerpts','name'=>'links_text'),
-						array('label'=>'List of links – with text excerpts and thumbnail images','name'=>'links_text_thumbnails'),
-						array('label'=>'Slideshow – open locations in lightbox','name'=>'slides'),
-						array('label'=>'Slideshow – link to individual location pages','name'=>'slides_linked'),
-						),
-		'custom_ui'	=> false,				
-		'helper'	=> 'Select how to display tour locations.'
-		),
-	array(
 		'label'		=> 'Map this Tour',
 		'name'		=> 'map_this_tour',
 		'type'		=> 'checkbox',
@@ -405,6 +388,19 @@ $locationFields = array(
 		'custom_ui'	=> false,
 		'helper'	=> 'Enter a subtitle for the location.'
 		),
+	array(
+		'label'		=> 'Location Display Template',
+		'name'		=> 'location_template',
+		'type'		=> 'select',
+		'options'	=> array(
+						array('label'=>'Grid-based gallery of images','name'=>'grid'),
+						array('label'=>'List with text excerpts and thumbnail images','name'=>'list'),
+						array('label'=>'Slideshow','name'=>'slides'),
+						array('label'=>'None (show media items on separate Location page)','name'=>'none'),
+						),
+		'custom_ui'	=> false,				
+		'helper'	=> 'Select how to display tour locations.'
+		),		
 	array(
 		'label'		=> 'Physical Location',
 		'name'		=> 'location_address',
