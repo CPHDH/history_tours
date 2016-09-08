@@ -574,7 +574,7 @@ function history_tours_tour_map($location_array){
 		$coords_raw = isset($meta['location_coordinates']) ? $meta['location_coordinates'][0] : null;
 		$title = $post->post_title;
 		if($coords_raw){
-			// Construct data array for map script		
+			// Construct data array for map script	
 			$script_data[] = process_marker_coords($coords_raw,$title);
 		}
 
@@ -593,21 +593,27 @@ function history_tours_map_script($script_data){
 			var bounds = new google.maps.LatLngBounds();			
 			var default_lat = <?php echo constant("MAP_DEFAULT_LAT");?>;
 			var default_lon = <?php echo constant("MAP_DEFAULT_LON");?>;
-			var default_zoom = 6;
+			var default_zoom = 4;
 			var map = new google.maps.Map(document.getElementById('map'), {
 				center: {lat: default_lat, lng: default_lon},
 				scrollwheel: false,
 				zoom: default_zoom
 			});
 			data.forEach(function(location,i){
-				console.log(location);
+				var contentString = '<div id="content"><a href="#'+location.anchor+'">'+location.title+'</a></div>';
+		        var infowindow = new google.maps.InfoWindow({
+		          content: contentString
+		        });				
 				markers[i] = new google.maps.Marker({
 					title: location.title,
 					map: map,
 					position: {lat: parseFloat(location.lat), lng: parseFloat(location.lon)},
 					animation: google.maps.Animation.DROP,
 				});	
-				bounds.extend(markers[i].getPosition());				
+				bounds.extend(markers[i].getPosition());	
+		        markers[i].addListener('click', function() {
+		          infowindow.open(map, markers[i]);
+		        });							
 			});
 			if(data.length > 1){
 				 map.fitBounds(bounds);
@@ -633,7 +639,7 @@ function history_tours_media_items($media_array){
 		$media_link = $media_meta['link'];
 		$media_url = $media_meta['url'];
 		
-		$html.= '<h4><a href="'.$media_link.'">'.$media_title.'</a></h4>';
+		$html.= '<h4 id="'.urlencode($media_title).'"><a href="'.$media_link.'">'.$media_title.'</a></h4>';
 		$html.= '<img src="'.$media_url.'" alt="'.$media_alt.'" style="max-width:100%;">';
 		$html.= $media_caption ? '<div class="entry-caption"><p>'.$media_caption.'</p></div>' : null;
 		$html.= $media_description ? '<p>'.$media_description.'</p>' : null;
@@ -717,7 +723,7 @@ function history_tours_tour_locations($location_array,$heading){
 		$imgURL = isset($meta['_thumbnail_id'][0]) ? wp_get_attachment_image_src($meta['_thumbnail_id'][0],'post-thumbnail',true) : false;	
 		$img = $imgURL ? '<div><img src="'.$imgURL[0].'"></div>' : null;
 		
-		$html .= '<h4>'.'<a href="'.$post->guid.'">'.$title.'</a>'.$subtitle.'</h4>';
+		$html .= '<h4 id="'.urlencode($title).'">'.'<a href="'.$post->guid.'">'.$title.'</a>'.$subtitle.'</h4>';
 		$html .= $img.$physical_location;
 		$html .= wpautop($post->post_content);
 		//$html .= ' <a href="'.$post->guid.'" class="read-more-button">Permalink</a>';
@@ -741,6 +747,7 @@ function process_marker_coords($coords_raw,$title){
 		$coords=explode(',',str_replace(array('(',')'),"",$coords_raw));
 		$script_data = array(
 				'title'=>$title,
+				'anchor'=>urlencode($title),
 				'lat'=>$coords[0],
 				'lon'=>$coords[1],
 			);	
