@@ -1,4 +1,3 @@
-console.log('tour scripts...');
 // SwipeJS image gallery
 window.mySwipe = new Swipe(document.getElementById('slider'), {
   startSlide: 0,
