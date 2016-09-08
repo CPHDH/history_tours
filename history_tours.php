@@ -527,14 +527,16 @@ function history_tours_append_custom_content($content){
 				
 		}
 		
-		// Tour Map
-		if(is_singular('tours') && $map_this && $location_array){
-			$html .= '<div id="history-tours-map">'.history_tours_tour_map($location_array).'</div>';
-		}
+
 		
 		// Content
 		$html .= $content;
-		
+
+
+		// Tour Map
+		if(is_singular('tours') && $map_this && $location_array){
+			$html .= '<div id="history-tours-map">'.history_tours_tour_map($location_array).'</div>';
+		}		
 		
 		// Media Items for Location
 		if(is_singular('tour_locations') && $media_array){
