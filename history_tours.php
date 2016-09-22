@@ -477,12 +477,23 @@ function append_to_tour_and_location_title($title){
 	if ( is_singular('tours') || is_singular('tour_locations') ){
 		$post = $GLOBALS['post'];
 		$meta = get_post_meta($post->ID,null,true);
-		if($title== $post->post_title && in_the_loop() && !is_page() && isset($meta['tour_subtitle']) && strlen($meta['tour_subtitle'][0])){ 
+		if(
+			($title == $post->post_title) && // this can break for non-standard characters
+			!is_page() 
+			&& isset($meta['tour_subtitle']) 
+			&& strlen($meta['tour_subtitle'][0])
+		){ 
 			// Tour Subtitle
-			return $title.'&nbsp;<br><span class="subtitle">'.$meta['tour_subtitle'][0].'</span>';
-		}elseif($title== $post->post_title && in_the_loop() && !is_page() && isset($meta['location_subtitle']) && strlen($meta['location_subtitle'][0])){ 
+			return $title.'<br><span class="subtitle">'.$meta['tour_subtitle'][0].'</span>';
+		}elseif(
+			//($title == $post->post_title) && // this can break for non-standard characters
+			in_the_loop() 
+			&& !is_page() 
+			&& isset($meta['location_subtitle']) 
+			&& strlen($meta['location_subtitle'][0])
+		){ 
 			// Location Subtitle
-			return $title.'&nbsp;<br><span class="subtitle">'.$meta['location_subtitle'][0].'</span>';
+			return $title.'<br><span class="subtitle">'.$meta['location_subtitle'][0].'</span>';
 		}else{
 			return $title;
 		}
@@ -717,7 +728,7 @@ function history_tours_tour_locations($location_array,$heading){
 		$meta = get_post_meta($loc,null,true);
 		$layout = isset($meta['location_template']) ? $meta['location_template'][0] : 'grid';
 		$title = $post->post_title;
-		$subtitle = (isset($meta['location_subtitle']) && strlen($meta['location_subtitle'][0])) ? '&nbsp;<br><span class="subtitle">'.$meta['location_subtitle'][0].'</span>' : null;
+		$subtitle = (isset($meta['location_subtitle']) && strlen($meta['location_subtitle'][0])) ? '<br><span class="subtitle">'.$meta['location_subtitle'][0].'</span>' : null;
 		$physical_location = (isset($meta['location_address']) && strlen($meta['location_address'][0])) ? '<div style="margin:1em 0;"><strong>Location</strong>: <span><em>'.$meta['location_address'][0].'</em></span></div>' : null;	
 		$imgURL = isset($meta['_thumbnail_id'][0]) ? wp_get_attachment_image_src($meta['_thumbnail_id'][0],'post-thumbnail',true) : false;	
 		$img = $imgURL ? '<div><img src="'.$imgURL[0].'"></div>' : null;
