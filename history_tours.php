@@ -607,7 +607,8 @@ function history_tours_map_script($script_data){
 			var map = new google.maps.Map(document.getElementById('map'), {
 				center: {lat: default_lat, lng: default_lon},
 				scrollwheel: false,
-				zoom: default_zoom
+				zoom: default_zoom,
+				styles:[{"elementType":"geometry","stylers":[{"hue":"#ff4400"},{"saturation":-68},{"lightness":-4},{"gamma":0.72}]},{"featureType":"road","elementType":"labels.icon"},{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"hue":"#0077ff"},{"gamma":3.1}]},{"featureType":"water","stylers":[{"hue":"#00ccff"},{"gamma":0.44},{"saturation":-33}]},{"featureType":"poi.park","stylers":[{"hue":"#44ff00"},{"saturation":-23}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"hue":"#007fff"},{"gamma":0.77},{"saturation":65},{"lightness":99}]},{"featureType":"water","elementType":"labels.text.stroke","stylers":[{"gamma":0.11},{"weight":5.6},{"saturation":99},{"hue":"#0091ff"},{"lightness":-86}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"lightness":-48},{"hue":"#ff5e00"},{"gamma":1.2},{"saturation":-23}]},{"featureType":"transit","elementType":"labels.text.stroke","stylers":[{"saturation":-64},{"hue":"#ff9100"},{"lightness":16},{"gamma":0.47},{"weight":2.7}]}],
 			});
 			data.forEach(function(location,i){
 				var contentString = '<div id="content"><a href="#'+location.anchor+'">'+location.title+'</a></div>';
@@ -619,6 +620,15 @@ function history_tours_map_script($script_data){
 					map: map,
 					position: {lat: parseFloat(location.lat), lng: parseFloat(location.lon)},
 					animation: google.maps.Animation.DROP,
+					icon: {
+		   		        path: google.maps.SymbolPath.CIRCLE,
+		   		        scale: 10,
+		   		        strokeColor: '#ffffff',
+		   		        strokeOpacity: 1,
+		   		        strokeWeight: 3,
+		   		        fillColor: '#d5283b',
+		   		        fillOpacity: .9,
+	   		      },					
 				});	
 				bounds.extend(markers[i].getPosition());	
 		        markers[i].addListener('click', function() {
