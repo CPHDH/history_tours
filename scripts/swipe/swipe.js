@@ -5,10 +5,11 @@
  * Copyright 2013, MIT License
  *
 */
-console.log('swipe...');
 function Swipe(container, options) {
 
   "use strict";
+  
+  console.log('SWIPE: '+container);
 
   // utilities
   var noop = function() {}; // simple no operation function

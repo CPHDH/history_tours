@@ -29,9 +29,9 @@ License: GPL2
 define( 'GOOGLE_MAPS_API_KEY', 'AIzaSyDKA8gwbVUoZvaPFXOdOjD4JFOAQFVTub4' );
 define( 'MAP_DEFAULT_LAT', '39.961176' );
 define( 'MAP_DEFAULT_LON', '-82.998794' );
-define( 'AUTO_FILTER_TITLES', true);
-define( 'AUTO_FILTER_CONTENT', true );
-define( 'WYSIWYG_TWEAKS', true );
+define( 'AUTO_FILTER_TITLES', true); // maybe disable for custom theme design
+define( 'AUTO_FILTER_CONTENT', true ); // maybe disable for custom theme design 
+define( 'WYSIWYG_TWEAKS', true ); // if true removes some annoying formatting buttons
 
 
 // Define custom post types and taxonomies
@@ -586,7 +586,6 @@ function history_tours_map_script($script_data){
 	?>
 	<script>
 		var data = <?php echo json_encode($script_data);?>;
-		console.log(data);
 
 		function initMap(){
 			var markers = [];
@@ -875,7 +874,6 @@ function history_tours_admin_object_picker($post,$type,$field,$label_from,$label
 			jQuery('#right li').each(function(index){
 				locations.push(jQuery(this).attr('id'))
 			});
-			console.log(locations);
 			jQuery('input#<?php echo $field;?>').val(locations);
 			
 		});
@@ -943,7 +941,6 @@ function history_tours_admin_map_form($post,$field){
 				});		
 				google.maps.event.addListener(marker, 'dragend', function(evt){
 					var new_location = '(' + evt.latLng.lat() + ',' + evt.latLng.lng() +')';
-					console.log(new_location);
 					jQuery('#<?php echo $field;?>').val(new_location);
 				}); 
 				jQuery('#clear_<?php echo $field;?>').removeClass('hidden');				
@@ -971,7 +968,6 @@ function history_tours_admin_map_form($post,$field){
 					jQuery('#<?php echo $field;?>').val(results[0].geometry.location);
 					google.maps.event.addListener(marker, 'dragend', function(evt){
 						var new_location = '(' + evt.latLng.lat() + ',' + evt.latLng.lng() +')';
-						console.log(new_location);
 						jQuery('#<?php echo $field;?>').val(new_location);
 					});   
 					jQuery('#clear_<?php echo $field;?>').removeClass('hidden');     

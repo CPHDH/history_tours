@@ -2,6 +2,53 @@
 @import '../scripts/fancybox/source/helpers/jquery.fancybox-thumbs.css';
 
 /*--------------------------------------------------------------
+### Locations: AJAX LIST
+--------------------------------------------------------------*/
+#history-tours-locations-chapters{
+	
+}
+.tour-location{
+	margin-bottom: 1em;
+}
+.tour-location > a{
+	width: 100%;
+	display: block;
+	height: 101px;
+	vertical-align: middle;
+	border: 1px solid #ccc;
+	background: #fafafa;
+	padding-top: 32px;
+	line-height: 20px;
+}
+.tour-location > a span{
+    height: 100px;
+    width: 100px;
+    line-height: 100px;
+    display: block;
+    background-size: cover;
+    float: left;
+    margin-right: 16px;	
+    background-color: #ccc;
+    text-align: center;
+    color:#fff;
+    text-shadow: 0 0 8px #000;
+    margin-top: -32px;
+    font-size: 32px;
+}
+.ajax-container .loader{
+	min-height: .25em;
+	width: 0;
+}
+.ajax-container.loading .loader{
+	background: teal;
+	width:100%;
+    -webkit-transition: width 1s ease-in-out;
+    -moz-transition: width 1s ease-in-out;
+    -o-transition: width 1s ease-in-out;
+    transition: width 1s ease-in-out;
+}
+
+/*--------------------------------------------------------------
 ### Tour Layouts: GRID
 --------------------------------------------------------------*/
 
