@@ -44,7 +44,7 @@ get_header(); ?>
 					 }
 					 
 					 $subtitle = isset($meta['tour_subtitle']) ? '<h2 class="subtitle">'.$meta['tour_subtitle'][0].'</h2>' : null;
-					 $cta = isset($meta['tour_location_label']) ? $meta['tour_location_label'][0] : 'Take the Tour';
+					 $cta = (isset($meta['tour_location_label']) && strlen($meta['tour_location_label'][0])) ? $meta['tour_location_label'][0] : 'Take the Tour';
 					 
 					 ?>
 
