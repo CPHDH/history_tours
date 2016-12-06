@@ -655,9 +655,57 @@ function history_tours_map_script($script_data){
 				 map.fitBounds(bounds);
 			}else{
 				map.setCenter(markers[0].getPosition());
-			}
-	
-			
+			}	
+			// Geolocation
+			if (navigator.geolocation) {
+				console.log('geolocation available');
+				// Create a div to hold the control.
+				var controlDiv = document.createElement('div');
+				// Set CSS for the control border
+				var controlUI = document.createElement('div');
+				controlUI.id = 'geolocation_button';
+				controlUI.style.cursor = 'pointer';
+				controlUI.style.padding = '0';
+				controlUI.style.marginLeft = '6px';
+				controlUI.title = 'Click to show your location on the map';
+				controlDiv.appendChild(controlUI);
+				// Set CSS for the control interior
+				var controlText = document.createElement('div');
+				controlText.innerHTML = '<img src="<?php echo plugin_dir_url( __FILE__ ) .'images/geolocation.svg';?>">';
+				controlUI.appendChild(controlText);	
+				// Add control
+				map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(controlDiv);	
+				// Click event					
+				google.maps.event.addDomListener(controlUI, 'click', function() {
+					
+					
+					navigator.geolocation.getCurrentPosition(function(position) {
+						var pos = {
+						  lat: position.coords.latitude,
+						  lon: position.coords.longitude
+						};
+						var youAreHere = new google.maps.Marker({
+							title: 'You are here.',
+							map: map,
+							position: {lat: parseFloat(pos.lat), lng: parseFloat(pos.lon)},
+							animation: google.maps.Animation.DROP,
+							icon: {
+				   		        path: google.maps.SymbolPath.CIRCLE,
+				   		        scale: 8,
+				   		        strokeColor: '#ffffff',
+				   		        strokeOpacity: 1,
+				   		        strokeWeight: 3,
+				   		        fillColor: '#1E88E5',
+				   		        fillOpacity: .9,
+			   		      },					
+						});
+						bounds.extend(youAreHere.getPosition());
+						map.fitBounds(bounds);						
+					}, function() {
+						alert('Geolocation service failed.');
+          			});	
+				});
+			}			
 		}
 	</script>
 	<?php
