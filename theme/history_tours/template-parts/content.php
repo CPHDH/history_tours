@@ -29,7 +29,7 @@
 	<div class="entry-content">
 		<?php 
 			if(get_the_excerpt() && is_singular('tours') && !is_singular('tour_locations') ) echo '<p class="excerpt">'.get_the_excerpt().'</p>';
-			if ( has_post_thumbnail() ) the_post_thumbnail('full');
+			if ( has_post_thumbnail() && !is_singular('tour_locations')) the_post_thumbnail('full');
 			the_content( sprintf(
 				/* translators: %s: Name of current post. */
 				wp_kses( __( 'Continue reading %s <span class="meta-nav">&rarr;</span>', 'history_tours' ), array( 'span' => array( 'class' => array() ) ) ),
