@@ -160,7 +160,7 @@ svg:not(:root) {
 }
 
 figure {
-	margin: 1em 40px;
+	margin: 0;
 }
 
 hr {
@@ -268,6 +268,15 @@ th {
 }
 
 /*--------------------------------------------------------------
+# Functional
+--------------------------------------------------------------*/
+.hidden{
+	display: none;
+	visibility: hidden;
+}
+
+
+/*--------------------------------------------------------------
 # Typography
 --------------------------------------------------------------*/
 body,
@@ -362,7 +371,7 @@ big {
 	font-size: 125%;
 }
 
-nav ul{
+nav ul,.tour-location a span{
 	font-family: "Fira Sans",sans-serif;
 }
 
@@ -948,6 +957,14 @@ p a, footer a{
     word-wrap: break-word;
     hyphens:auto;
     }
+@media screen and (max-width:30em){
+	.home-content p{
+		font-size: .85em;
+	}
+	.featured-tour article h1.title{
+		font-size: 2em;
+	}
+}    
 .home-content .divider{
 	margin-top: -9em;
 	margin-bottom: 0;
@@ -1089,7 +1106,7 @@ p a, footer a{
 	border-bottom: 1px dashed #ccc;
 }
 .entry-footer{
-	border-bottom: 1px solid #000;
+/* 	border-bottom: 1px solid #000; */
 	padding-bottom: .5em;
 }
 .entry-footer a{
@@ -1114,6 +1131,9 @@ p.excerpt{
 span.subtitle{
 	font-size: .8em;
 	font-weight: 400;
+	display: block;
+	line-height: 1.4em;
+	margin-top: .4em;
 }
 
 /*--------------------------------------------------------------
@@ -1141,6 +1161,23 @@ span.subtitle{
 	text-align: center;
 }
 
+#history-tours-locations-chapters h3{
+	text-align: center;
+	font-weight: 400;
+	font-size: 1.4em;
+	margin-top: 2em;	
+}
+#history-tours-locations-chapters h3:after{
+	content: ' ';
+	display: block;
+	margin: 1em auto 3em;
+	width:80%;
+	height: 3em;
+	max-width: 15em;
+	background: url(images/ohc-divider.png) no-repeat;
+	background-size: contain;
+	background-position: center center;	
+}
 
 
 /*--------------------------------------------------------------
@@ -1158,12 +1195,69 @@ span.subtitle{
 	max-width: 18em;
 }
 
+#comments{
+    background: #f5f5f5;
+    padding: 1em;
+    border-radius: 7px;
+    font-size: .75em;	
+    box-shadow: 0 0 3px #777;
+}
+
+#comments #reply-title, .comments-title{
+	text-transform: uppercase;
+	text-align: center;
+}
+
+ol.comment-list{
+	padding-left: 0;
+	margin-left: 0;
+}
+ol.comment-list, ol.comment-list ol{
+	list-style-type: none;
+}
+
+.comment-author.vcard{
+	background: #fafafa;
+	padding: 3px;
+	line-height: 0;
+	margin-top: 1em;
+}
+.comment-author.vcard img{
+	vertical-align: middle;
+	margin-right: .5em;
+}
+.comment-metadata{
+	text-align: right;
+	font-style: italic;
+}
+.comment-metadata a{
+	color:#777;
+	font-size: .8em;
+}
+.comments-title .subtitle, .comments-title br{
+	display: none;
+}
+#comments .reply a{
+	text-decoration: underline;
+}
+.comment-awaiting-moderation{
+	font-style: italic;
+	display: block;
+	padding: 3px 6px 2px;
+	background: #f0e68c;
+	text-align: center;
+}
+#cancel-comment-reply-link{
+	text-decoration: underline;
+	font-weight: 400;	
+}
+
 /*--------------------------------------------------------------
 ## Map
 --------------------------------------------------------------*/
 
-#history-tours-map figure{
-	margin: 0;
+figure #map{
+	margin: 1em 0 1em;
 }
 
 .entry-caption{
