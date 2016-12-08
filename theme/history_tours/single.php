@@ -20,7 +20,7 @@ get_header(); ?>
 			if (get_post_format() === 'post') the_post_navigation();
 
 			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
+			if ( !get_post_format() === 'tour'  && (comments_open() || get_comments_number()) ) :
 				comments_template();
 			endif;
 
