@@ -162,6 +162,31 @@
 }
 
 /*--------------------------------------------------------------
+### MAP
+--------------------------------------------------------------*/
+@keyframes pulse_animation {
+	0% { transform: scale(1); opacity: .5;}
+	30% { transform: scale(1); opacity: .5;}
+	40% { transform: scale(1.08); opacity: 1;}
+	50% { transform: scale(1); opacity: .5;}
+	60% { transform: scale(1); opacity: .5;}
+	70% { transform: scale(1.05); opacity: 1;}
+	80% { transform: scale(1); opacity: .5;}
+	100% { transform: scale(1); opacity: .5;}	
+}
+
+#geolocation_button.working{
+	animation-name: pulse_animation;
+	animation-duration: 3000ms;
+	transform-origin:70% 70%;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;	
+}
+#geolocation_button.failed{
+	opacity: .5;
+}
+
+/*--------------------------------------------------------------
 ### SWIPE JS
 --------------------------------------------------------------*/
 

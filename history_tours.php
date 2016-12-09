@@ -677,8 +677,7 @@ function history_tours_map_script($script_data){
 				map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(controlDiv);	
 				// Click event					
 				google.maps.event.addDomListener(controlUI, 'click', function() {
-					
-					
+					controlUI.className = 'working';
 					navigator.geolocation.getCurrentPosition(function(position) {
 						var pos = {
 						  lat: position.coords.latitude,
@@ -700,9 +699,11 @@ function history_tours_map_script($script_data){
 			   		      },					
 						});
 						bounds.extend(youAreHere.getPosition());
-						map.fitBounds(bounds);						
+						map.fitBounds(bounds);	
+						controlUI.className = '';
 					}, function() {
 						alert('Geolocation service failed.');
+						controlUI.className = 'failed';
           			});	
 				});
 			}			
