@@ -505,7 +505,7 @@ function append_to_tour_and_location_title($title){
 
 // Adds filter to the_content() so that custom content is displayed automatically in tour/location posts
 if(constant("AUTO_FILTER_CONTENT")){
-	add_filter( 'the_content', 'history_tours_append_custom_content', 1 );
+	add_filter( 'the_content', 'history_tours_append_custom_content', 99999 );
 }
 function history_tours_append_custom_content($content){
 	if ( is_singular('tours') || is_singular('tour_locations') ){
