@@ -855,7 +855,7 @@ function history_tours_tour_locations_list_for_ajax($location_array){
 		foreach($location_array as $loc){
 			$l=get_post( $loc );
 			$lm=get_post_meta($loc,'location_subtitle',true);
-			$thumbsrc=wp_get_attachment_image_src(get_post_thumbnail_id($l),'fullsize', true);
+			$thumbsrc=wp_get_attachment_image_src(get_post_thumbnail_id($l),'thumbnail', true);
 			$html .= '<div class="tour-location location-'.$i.'" id="'.urlencode($l->post_title).'">';
 				$html .= '<a class="tour-location-link" href="'.$l->guid.'">';
 				$html .= '<span class="thumb" style="background-image:url('.$thumbsrc[0].')">'.$i.'</span>';
